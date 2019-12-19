@@ -1,0 +1,22 @@
+#!/bin/sh
+
+#SYSROOT=/home/ljh/work/raspberrypi/rasbian/rootfs
+WORK_BUILD_INSTALL=${ROOT_PATH}/install/usr/lib/arm-linux-gnueabihf/pkgconfig:${ROOT_PATH}/install/usr/share/pkgconfig
+
+# When cross-compiling you want to ignore the packages installed in the system, 
+# and instead rely only on those installed in the cross-compiled environment. 
+# This is achieved by resetting PKG_CONFIG_DIR (which lists additional search paths), 
+# and at the same time setting PKG_CONFIG_LIBDIR to override the default base search paths.
+export PKG_CONFIG_DIR=
+
+# List of primary directories where ‘.pc’ files are looked up.
+export PKG_CONFIG_LIBDIR=${WORK_BUILD_INSTALL}
+#export PKG_CONFIG_LIBDIR=${WORK_BUILD_INSTALL}:${SYSROOT}/home/pi/work/install/usr/share/pkgconfig
+#export PKG_CONFIG_LIBDIR=${WORK_BUILD_INSTALL}:${SYSROOT}/usr/lib/arm-linux-gnueabihf/pkgconfig:${SYSROOT}/usr/share/pkgconfig
+
+# ‘sysroot’ directory, will be prepended to every path defined in PKG_CONFIG_PATH. Useful for cross compilation.
+export PKG_CONFIG_SYSROOT_DIR=${INSTALL_PATH}
+
+#export PKG_CONFIG_SYSTEM_INCLUDE_PATH=${SYSROOT}/home/pi/work/install/usr/include
+
+exec pkg-config "$@"
